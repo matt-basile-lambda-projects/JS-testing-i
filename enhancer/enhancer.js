@@ -37,7 +37,7 @@ function enhancerFinal(item){
     
     const dRange = durabilityRange(item.durability, item.enhancement)
    
-    if(type && eRange && dRange){
+    if(type && (eRange || eRange ===0)&& (dRange ||dRange === 0)){
         console.log(type)
         console.log(eRange)
         console.log(dRange)
@@ -58,8 +58,11 @@ function durabilityRange(durability, enhancement){
         if(enhancement >= 0 && enhancement <= 14){
             if(durability >=20){
                 return durability
+            } else{
+                return false
             }
-        } else if(enhancement >= 15 && enhancement <= 20){
+        } 
+        else if(enhancement >= 15 && enhancement <= 20){
             if(durability >=0){
                 return durability
             }
@@ -96,15 +99,11 @@ function itemTitle(item){
     let title = item.name;
     let level = item.enhancement;
     level === 16 ? level = "PRI" : level === 17 ? level = "DUO" : level === 18 ? level = "TRI" : level === 19 ? level = "TET" : level === 20 ? level = "PEN" : null;
-    return level === 0 ?   title  : item.enhancement > 15 ?  `[${level}]${title}` :  `[+${level}]${title}` 
-    
+    return level === 0 ?   title  : item.enhancement > 15 ?  `[${level}]${title}` :  `[+${level}]${title}`   
 }
 function succeeds(item){
-    console.log(item)
-    let title = itemTitle(item)
-    console.log(title)
     let enhance = item.enhancement + 1;
-    console.log(enhance)
+    let title = itemTitle({...item, enhancement: enhance})
     const updated = {
         ...item,
         name: title,

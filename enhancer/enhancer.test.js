@@ -80,16 +80,49 @@ test('enhancement Range', ()=>{
 })
 
 test('successful enhancement', ()=>{
+    const item0 = {
+        name: 'Shield',
+        type: 'armor',
+        durability: 100,
+        enhancement: 0
+    }
     const item = {
         name: 'Shield',
         type: 'armor',
         durability: 100,
-        enhancement: 1
+        enhancement: 15
     }
-    expect(enhancer.enhancerFinal(item)).toEqual({
+    const item20 = {
+        name: 'Shield',
+        type: 'armor',
+        durability: 100,
+        enhancement: 19
+    }
+    const itemFail = {
+        name: 'Shield',
+        type: 'armor',
+        durability: -5,
+        enhancement: 16
+    }
+    expect(enhancer.enhancerFinal(item0)).toEqual({
             name: '[+1]Shield',
             type: 'armor',
             durability: 100,
-            enhancement: 2
+            enhancement: 1
     })
+    expect(enhancer.enhancerFinal(item)).toEqual({
+            name: '[PRI]Shield',
+            type: 'armor',
+            durability: 100,
+            enhancement: 16
+    })
+    expect(enhancer.enhancerFinal(item20)).toEqual({
+            name: '[PEN]Shield',
+            type: 'armor',
+            durability: 100,
+            enhancement: 20
+    })
+    expect(enhancer.enhancerFinal(itemFail)).toEqual(
+            null
+    )
 })
