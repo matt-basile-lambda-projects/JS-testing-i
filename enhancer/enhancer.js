@@ -31,13 +31,13 @@ function repair(item){
 function enhancerFinal(item){
     // Item Enhancement Caps
     
-    const type = itemType(item.type)
-    
+    const type = itemType(item)
+    console.log(type)
     const eRange = enhanceRange(item.enhancement)
     
     const dRange = durabilityRange(item.durability, item.enhancement)
    
-    if(type && (eRange || eRange ===0)&& (dRange ||dRange === 0)){
+    if(type && (eRange || eRange === 0) && (dRange ||dRange === 0)){
         console.log(type)
         console.log(eRange)
         console.log(dRange)
@@ -48,11 +48,9 @@ function enhancerFinal(item){
             enhancement: eRange
         })
     } else{
-        return fail()
+        return fail(item)
     }
 }
-
-
 function durabilityRange(durability, enhancement){
     if(durability >=0 && durability<=100){
         if(enhancement >= 0 && enhancement <= 14){
@@ -73,7 +71,6 @@ function durabilityRange(durability, enhancement){
         return false
     }
 }
-
 //Item Durability caps
 function enhanceRange(enhancement){
     if(enhancement >=0 && enhancement <=20){
@@ -82,18 +79,15 @@ function enhanceRange(enhancement){
         return false
     }
 }
-
 //Item type function
 // item.type === armor || weapon
-function itemType(type){
-    if(type === 'armor' || type === 'weapon'){
-        return type
+function itemType(item){
+    if(item.type === 'armor' || item.type === 'weapon'){
+        return item.type
     } else{
-     return fail()
+     return false
     }
 }
-
-
 //Item title function
 function itemTitle(item){
     let title = item.name;
@@ -112,6 +106,32 @@ function succeeds(item){
     return updated
 }
 
-function fail(){
-    return null
-}
+// function fail(item){
+//     const durability = item.durability
+//     const testEnhancement = item.enhancement
+//     if(testEnhancement >= 0 && testEnhancement<= 14){
+//         return {...item, durability: durability - 5}
+//     }
+//     if(testEnhancement > 14){
+//         return {...item, durability: durability - 10}
+//     }
+//     if(testEnhancement > 16){
+//         let enhance = testEnhancement - 1;
+//         let newName = (itemTitle(item.name, enhancement: enhance)) 
+//         return {...item, name:newName, durability: durability - 10, enhancement: enhancement-1}
+//     }
+// }
+function fail(item) {
+    if (item.enhancement < 15 && item.durability < 25) {
+      return { ...item };
+    }
+  
+    const durability =
+      item.enhancement < 15 ? item.durability - 5 : item.durability - 10;
+  
+    const enhancement =
+      item.enhancement > 16 ? item.enhancement - 1 : item.enhancement;
+  
+    return { ...item, durability, enhancement };
+  }
+  
